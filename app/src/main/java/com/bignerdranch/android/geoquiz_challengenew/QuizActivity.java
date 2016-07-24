@@ -14,8 +14,9 @@ import com.bignerdranch.android.geoquiz_challengenew.R;
 
 
 public class QuizActivity extends AppCompatActivity {
-
     private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
+
     private Button mTrueButton;
     private Button mFalseButton;
     //private Button mNextButton;
@@ -61,15 +62,15 @@ public class QuizActivity extends AppCompatActivity {
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(new View.OnClickListener() {
-            /*
-            mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
-            int question = mQuestionBank[mCurrentIndex].getTextResId();
-            mQuestionTextView.setText(question);
-             */
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
+        /*
+            mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+            int question = mQuestionBank[mCurrentIndex].getTextResId();
+            mQuestionTextView.setText(question);
+        */
             }
         });
 
@@ -123,9 +124,14 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
+
         updateQuestion();
+
     }
-    
+
     /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -142,6 +148,13 @@ public class QuizActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
      */
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstaneceState) {
+        super.onSaveInstanceState(savedInstaneceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstaneceState.putInt(KEY_INDEX, mCurrentIndex);
+    }
 
     @Override
     public void onStart() {
